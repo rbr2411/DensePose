@@ -19,7 +19,7 @@ plt.contour( IUV[:,:,2]/256.,10, linewidths = 1 )
 
 ## Now, for running the notebooks mentioned below, please clone the github repository in your google drive.
 
-See[`notebooks/DensePose-COCO-Visualize.ipynb`](notebooks/DensePose-COCO-Visualize.ipynb) 
+See[`notebooks/DensePose_COCO_Visualize.ipynb`](notebooks/DensePose_COCO_Visualize.ipynb) 
 In this notebook, we visualize the DensePose-COCO annotations on the image. In the First cell we will import all the necessary modules. We then select a random image from the coco dataset and load the annotations corresponding to it. Then GetDensePoseMasks(Polys) function to get dense pose masks from the decoded masks. Then in the next cell, input data is clipped to the valid range for imshow with RGB data. Finally in the last cell, points are visualised.
 
 
@@ -30,7 +30,7 @@ Below, we load the ann and find corresponding face index and barycentric coordin
 
 ### Visualize DensePose-RCNN Results:
 
-See [`notebooks/DensePose-RCNN-Visualize-Results.ipynb`](notebooks/DensePose-RCNN-Visualize-Results.ipynb) 
+See [`notebooks/DensePose_RCNN_Visualize_Results.ipynb`](notebooks/DensePose_RCNN_Visualize_Results.ipynb) 
 In this notebook, in the first cell we import all the necessary modules. Then, we Visualize the I, U and V images. Then, we visualize the isocontours of the UV Fields. 
 
 ### DensePose-RCNN Texture Transfer:
