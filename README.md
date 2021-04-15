@@ -1,87 +1,41 @@
 # DensePose: 
 **Dense Human Pose Estimation In The Wild**
 
-_Rıza Alp Güler, Natalia Neverova, Iasonas Kokkinos_
-
-[[`densepose.org`](https://densepose.org)] [[`arXiv`](https://arxiv.org/abs/1802.00434)] [[`BibTeX`](#CitingDensePose)]
-
-Dense human pose estimation aims at mapping all human pixels of an RGB image to the 3D surface of the human body. 
-DensePose-RCNN is implemented in the [Detectron](https://github.com/facebookresearch/Detectron) framework and is powered by [Caffe2](https://github.com/caffe2/caffe2).
-
-<div align="center">
-  <img src="https://drive.google.com/uc?export=view&id=1qfSOkpueo1kVZbXOuQJJhyagKjMgepsz" width="700px" />
-</div>
-
-
-In this repository, we provide the code to train and evaluate DensePose-RCNN. We also provide notebooks to visualize the collected DensePose-COCO dataset and show the correspondences to the SMPL model.
-
-## Important Note
-
-**!!! This project is no longer supported !!!**
-
-DensePose is now part of Detectron2 (https://github.com/facebookresearch/detectron2/tree/master/projects/DensePose). There you can find the most up to date architectures / models. If you think some feature is missing from there, please post an issue in [Detectron2 DensePose](https://github.com/facebookresearch/detectron2/tree/master/projects/DensePose).
-
-## Installation
-
-Please find installation instructions for Caffe2 and DensePose in [`INSTALL.md`](INSTALL.md), a document based on the [Detectron](https://github.com/facebookresearch/Detectron) installation instructions.
-
-## Inference-Training-Testing
-
-After installation, please see [`GETTING_STARTED.md`](GETTING_STARTED.md)  for examples of inference and training and testing.
-
 ## Notebooks
 
-### Visualization of DensePose-COCO annotations:
+### DensePose
+See[`DensePose.ipynb`](DensePose.ipynb)
+The 1st code cell is used to import drive in a colab notebook. Next, we imported all dependencies anaconda(with linux), pytorch, etc which were required for implementation of the model. After that, we clone densepose repo from its official github repository using
+!git clone -q --depth 1 $git_repo_url
+By this, we can use all python functions required to run our model from densepose directly.
+!python2 $project_name/detectron/tests/test_spatial_narrow_as_op.py
+!python2 $project_name/detectron/tests/test_zero_even_op.py
+Above two files are used to check whether we are using correct dependencies and the correct environment required to run the model or not. 
+After all this comes the implementation part. Here we first call input image(here demo_im.jpg) and model specifications are given in file “DensePose_ResNet101_FPN_s1x-e2e.yaml” present in configs folder(pre-trained weights are present in R-101.pkl). Output images will be created and stored in the DensePoseData/infer_out folder. 
+To visualize the results, we will first read input file and output files created in previous cell and after that we will use these three line of codes to plot desired output images:
+plt.imshow( im[:,:,::-1] )
+plt.contour( IUV[:,:,1]/256.,10, linewidths = 1 )
+plt.contour( IUV[:,:,2]/256.,10, linewidths = 1 )
 
-See [`notebooks/DensePose-COCO-Visualize.ipynb`](notebooks/DensePose-COCO-Visualize.ipynb) to visualize the DensePose-COCO annotations on the images:
+## Now, for running the notebooks mentioned below, please clone the github repository in your google drive.
 
-<div align="center">
-  <img src="https://drive.google.com/uc?export=view&id=1uYRJkIA24KkJU2i4sMwrKa61P0xtZzHk" width="800px" />
-</div>
+See[`notebooks/DensePose-COCO-Visualize.ipynb`](notebooks/DensePose-COCO-Visualize.ipynb) 
+In this notebook, we visualize the DensePose-COCO annotations on the image. In the First cell we will import all the necessary modules. We then select a random image from the coco dataset and load the annotations corresponding to it. Then GetDensePoseMasks(Polys) function to get dense pose masks from the decoded masks. Then in the next cell, input data is clipped to the valid range for imshow with RGB data. Finally in the last cell, points are visualised.
 
----
 
-### DensePose-COCO in 3D:
+See [`notebooks/DensePose-COCO-on-SMPL.ipynb`](notebooks/DensePose-COCO-on-SMPL.ipynb) 
+This document demonstrates the localization of collected points on the SMPL model. AtFirst, we install chumpy by !pip install chumpy due to some errors in importing Pickle Module. In the next cell, we have defined some functions to visualize the SMPL model vertices like smpl_view_set_axis_full_body(ax,azimuth=0), etc. For the sake of simplicity, we have a single densepose annotation "demo_dp_single_ann.pkl" for demonstration.
+Below, we load the ann and find corresponding face index and barycentric coordinates, which allows us to localize the point on the 3D surface.
 
-See [`notebooks/DensePose-COCO-on-SMPL.ipynb`](notebooks/DensePose-COCO-on-SMPL.ipynb) to localize the DensePose-COCO annotations on the 3D template ([`SMPL`](http://smpl.is.tue.mpg.de)) model:
 
-<div align="center">
-  <img src="https://drive.google.com/uc?export=view&id=1m32oyMuE7AZd3EOf9k8zHpr75C8bHlYj" width="500px" />
-</div>
-
----
 ### Visualize DensePose-RCNN Results:
 
-See [`notebooks/DensePose-RCNN-Visualize-Results.ipynb`](notebooks/DensePose-RCNN-Visualize-Results.ipynb) to visualize the inferred DensePose-RCNN Results.
+See [`notebooks/DensePose-RCNN-Visualize-Results.ipynb`](notebooks/DensePose-RCNN-Visualize-Results.ipynb) 
+In this notebook, in the first cell we import all the necessary modules. Then, we Visualize the I, U and V images. Then, we visualize the isocontours of the UV Fields. 
 
-<div align="center">
-  <img src="https://drive.google.com/uc?export=view&id=1k4HtoXpbDV9MhuyhaVcxDrXnyP_NX896" width="900px" />
-</div>
-
----
 ### DensePose-RCNN Texture Transfer:
 
-See [`notebooks/DensePose-RCNN-Texture-Transfer.ipynb`](notebooks/DensePose-RCNN-Texture-Transfer.ipynb) to localize the DensePose-COCO annotations on the 3D template ([`SMPL`](http://smpl.is.tue.mpg.de)) model:
+See [`notebooks/DensePose-RCNN-Texture-Transfer.ipynb`](notebooks/DensePose-RCNN-Texture-Transfer.ipynb) 
+In this notebook we demonstrate how the estimated dense coordinates can be used to map a texture from the UV space to image pixels. For this purpose we provide an "atlas" texture space, which allows easy design of custom textures. We also provide a modified texture that is obtained from the SURREAL dataset, which allows replication of the qualitative results that we provide in the paper.
 
-<div align="center">
-  <img src="https://drive.google.com/uc?export=view&id=1r-w1oDkDHYnc1vYMbpXcYBVD1-V3B4Le" width="900px" />
-</div>
-
-## License
-
-This source code is licensed under the license found in the [`LICENSE`](LICENSE) file in the root directory of this source tree.
-
-## <a name="CitingDensePose"></a>Citing DensePose
-
-If you use Densepose, please use the following BibTeX entry.
-
-```
-  @InProceedings{Guler2018DensePose,
-  title={DensePose: Dense Human Pose Estimation In The Wild},
-  author={R\{i}za Alp G\"uler, Natalia Neverova, Iasonas Kokkinos},
-  journal={The IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
-  year={2018}
-  }
-```
-
-
+### We suggest you to go through all these notebooks.
